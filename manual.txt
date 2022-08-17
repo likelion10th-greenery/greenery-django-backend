@@ -1,0 +1,54 @@
+[Model Design]
+
+1. shop - Plant
++ plant_name : 식물 이름
++ price : 식물 가격
++ category : 식물 대분류/카테고리 (꽃, 관엽/공기정화, 다육식물, 야생화/분재, 동/서양란, 묘목/씨앗, 기타)
++ pic1 : 식물 사진 1번
++ pic2
++ pic3
++ pic4
++ pic5
++ pic6
++ pic7
++ pic8
++ pic9
++ pic10
++ stock : 재고
++ origin : 식물종 (국내산, 수입산, 모름)
++ plant_width : 식물 가로
++ plant_vertical : 식물 세로
++ plant_height : 식물 높이
++ pot_type : 화분 종류
++ deliver_type : 배달 방법 (택배, 직거래)
++ plant_detail : 식물 상세 정보
++ address : 판매자 주소
++ pub_date : 생성 날짜 - 자동
+
+[URL & JSON form]
+
+1. shop
+
+http://127.0.0.1:8000/shop/ : 등록된 식물 전체 조회 페이지
+
+http://127.0.0.1:8000/shop/[식물 id]/ : 해당 id 값을 가진 한 식물 조회
+
+http://127.0.0.1:8000/shop/register/ : 식물 등록
+{
+"plant_name":"[식물이름]",
+"price":[가격],
+"category":"[카테고리]",
+"stock":[재고],
+"origin":"[식물종]",
+"deliver_type":"[배달방법]",
+"address":"[판매자 주소]",
+"pic1":"[식물사진1]",
+"pic2":"[식물사진2]"
+}
+# 식물사진 필요하면 10장까지 추가 가능
+# 화분종류, 식물의 가로, 세로, 높이도 필요하면 Model Design의 필드명을 참고하여 추가 가능
+# 카테고리, 식물종, 배달방법은 튜플의 첫 번째 값으로 넣어야 함
+
+http://127.0.0.1:8000/shop/search?query=[찾을 식물의 이름] : 포함된 키워드로 식물찾기.
+
+http://127.0.0.1:8000/shop/[카테고리]/ : 카테고리로 식물 찾기
