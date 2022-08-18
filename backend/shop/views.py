@@ -1,8 +1,9 @@
+from email.mime import image
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Plant
-from .serializers import PlantSerializer, PlantRegisterSerializer
+from .serializers import PlantSerializer, PlantRegisterSerializer, PlantImageRegisterSerializer
 
 # Create your views here.
 
@@ -59,8 +60,11 @@ def search(request):
 '''
 @api_view(['POST'])
 def register_plant(request):
-    serializer = PlantRegisterSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    plant_serializer = PlantRegisterSerializer(data=request.data)
+    image_serializer = PlantImageRegisterSerializer(data=request.data.get("plant_images"))
+    
+    if plant_serializer.is_valid() and image_serializer.is_valid():
+        plant_serializer.save()
+        image_serializer.save()
+        return Response(plant_serializer.data.update(image_serializer.data), status=status.HTTP_200_OK)
     return Response(status=status.HTTP_400_BAD_REQUEST)
