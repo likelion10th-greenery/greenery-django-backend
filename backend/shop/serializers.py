@@ -9,10 +9,9 @@ class PlantImageRegisterSerializer(serializers.ModelSerializer):
 class PlantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plant
-        fields = ['id', 'plant_name', 'price']
+        fields = ['id', 'plant_type', 'price']
 
 class PlantRegisterSerializer(serializers.ModelSerializer):
-    plant_images=serializers.CharField()
     
     class Meta:
         model = Plant

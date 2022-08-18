@@ -25,7 +25,7 @@ DELIVERY = (
 class Plant(models.Model):
     # ------------------ shop main -------------------- #
     feed_title= models.CharField(max_length=50, default="꽃 구경하세요:)") #게시글의 제목
-    plant_name = models.CharField(max_length=50) # 나중에 식물명 데이터 베이스에서 고르는 형식으로 바꾸겠음.
+    plant_type = models.CharField(max_length=50) # 나중에 식물명 데이터 베이스에서 고르는 형식으로 바꾸겠음.
     price = models.IntegerField()
     # ------------------ register -------------------- #
     category = models.CharField(max_length=50, choices=CATEGORIES)
@@ -42,7 +42,10 @@ class Plant(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # 마찬가지로 날짜는 pdf는 없는 요소
 
     def __str__(self):
-        return self.plant_name
+        return self.plant_type
+
+    def add_view_cnt(self):
+        self.view_cnt+=1
 
 class Tag(models.Model):
     plant_id = models.ForeignKey(Plant, on_delete=models.CASCADE)

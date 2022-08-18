@@ -33,10 +33,14 @@ def get_classified_plants(request, type):
 '''
 @api_view(['GET'])
 def get_one_plant(request, id):
-    plant = Plant.objects.get(id=id)
     try:
-        serializer = PlantRegisterSerializer(plant)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            plant = Plant.objects.get(id=id)
+            plant.add_view_cnt()
+            plant.save()
+        
+            serializer = PlantRegisterSerializer(plant)
+            return Response(serializer.data, status=status.HTTP_200_OK)
     except Plant.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -71,8 +75,6 @@ def register_plant(request):
                 image_serializer=PlantImageRegisterSerializer(data=plant_image)
                 if image_serializer.is_valid():
                     image_serializer.save()
-                    
-            plant_serializer.data["plant_images"]=str(request.data.get("plant_images"))
             return Response(plant_serializer.data, status=status.HTTP_200_OK)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
