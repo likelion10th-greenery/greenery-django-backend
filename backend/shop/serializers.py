@@ -1,10 +1,15 @@
 from rest_framework import serializers
-from .models import Plant, Tag
+from .models import Plant, PlantImage, Tag
+
+class PlantImageRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlantImage
+        fields = '__all__'
 
 class PlantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plant
-        fields = ['id', 'pic1', 'plant_name', 'price']
+        fields = ['id', 'plant_name', 'price']
 
 class PlantRegisterSerializer(serializers.ModelSerializer):
     class Meta:
