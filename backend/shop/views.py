@@ -1,4 +1,4 @@
-import logging
+from django.http import JsonResponse
 from django.db import transaction
 
 from rest_framework import status
@@ -7,9 +7,7 @@ from rest_framework.decorators import api_view
 
 from .models import Plant
 from .serializers import PlantSerializer, PlantRegisterSerializer, PlantImageRegisterSerializer, TagSerializer
-
-from bs4 import BeautifulSoup
-
+from .utils.PlantTypeCrawler import PlantTypeCrawler
 
 # Create your views here.
 
@@ -80,12 +78,12 @@ def register_plant(request):
             if plant_serializer.is_valid(raise_exception=True):
                 plant_serializer.save()
 
-                plant_images = request.data.get("plant_images")
+                plant_images = sorted(request.data.get("plant_images"),key=lambda x: x["image_number"])
                 plant = Plant.objects.last()
-                for plant_image in plant_images:
+                for idx, plant_image in enumerate(plant_images, start=1):
                     image_serializer=PlantImageRegisterSerializer(data=plant_image, partial=True)
                     if image_serializer.is_valid(raise_exception=True):
-                        image_serializer.save(plant=plant)
+                        image_serializer.save(plant=plant, image_number=idx)
                 return Response(plant_serializer.data, status=status.HTTP_200_OK)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -102,3 +100,9 @@ def create_tag(request, id):
         serializer.save(plant_id=plant)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+def update_plant_type(request):
+    PlantTypeCrawler().crawler()
+    
+    data = {'result': "DB update success"}
+    return JsonResponse(data, status=status.HTTP_200_OK)

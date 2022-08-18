@@ -25,7 +25,7 @@ DELIVERY = (
 class Plant(models.Model):
     # ------------------ shop main -------------------- #
     feed_title= models.CharField(max_length=50, default="꽃 구경하세요:)") #게시글의 제목
-    plant_type = models.CharField(max_length=50) # 나중에 식물명 데이터 베이스에서 고르는 형식으로 바꾸겠음.
+    plant_type = models.CharField(max_length=50) # 식물명 데이터 베이스 만들었어요~
     price = models.IntegerField()
     # ------------------ register -------------------- #
     category = models.CharField(max_length=50, choices=CATEGORIES)
@@ -57,13 +57,13 @@ class Tag(models.Model):
 class PlantImage(models.Model):
     """
     이미지 필요할 때, view에서 찾아서 뿌려주는걸료..?
+    대표 이미지는 image_number 값이 1인 값입니다.
     """
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
     image_url = models.TextField()
     image_number = models.IntegerField()  
-    is_rep = models.BooleanField(blank=True)
-    # 근데 이 필드가 무한으로 생성되는 거 아님? (그렇게 해달라고 하셨다 맞다)
-    # 근데 img_number가 한 아이디당 10까지만 되는 게 아니라 연속 숫자로 계속 불어나는 게 아닌가?
-    # 함수를 만들 수 있으려나? 일단 해보고 함수를 만들자
-    # 함수 : 같은 plant_id를 가진 필드라면 나중에 올린 image_number이 후에 올린 image_number보다 하나 크도록.
-    # 그럼 자동생성이랑 다를 게 뭐야 / 일단 자동생성으로 해보자.
+    # 근데 img_number가 한 아이디당 10까지만 되는 게 아니라 연속 숫자로 계속 불어나는 게 아닌가? 
+    # -> 이건 프론트 단에서 입력하는 칸 갯수를 막으면 돼요!
+
+class PlantType(models.Model):
+    type=models.CharField(max_length=100)
