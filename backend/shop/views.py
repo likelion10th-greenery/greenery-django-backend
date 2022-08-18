@@ -1,26 +1,33 @@
+import logging
 from django.db import transaction
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+
 from .models import Plant
 from .serializers import PlantSerializer, PlantRegisterSerializer, PlantImageRegisterSerializer, TagSerializer
 
+from bs4 import BeautifulSoup
+
+
 # Create your views here.
 
-'''
-모든 식물 조회
-'''
 @api_view(['GET'])
 def get_all_plants(request):
+    '''
+    모든 식물 조회
+    '''
     plants = Plant.objects.all()
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
-'''
-카테고리별로 식물 조회
-''' 
+
 @api_view(['GET'])
 def get_classified_plants(request, type):
+    '''
+    카테고리별로 식물 조회
+    ''' 
     plants = Plant.objects.filter(category=type)
     try:
         serializer = PlantSerializer(plants, many=True)
@@ -28,11 +35,12 @@ def get_classified_plants(request, type):
     except Plant.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-'''
-한 식물 디테일 페이지 조회 (id값으로)
-'''
+
 @api_view(['GET'])
 def get_one_plant(request, id):
+    '''
+    한 식물 디테일 페이지 조회 (id값으로)
+    '''
     try:
         with transaction.atomic():
             plant = Plant.objects.get(id=id)
@@ -44,11 +52,12 @@ def get_one_plant(request, id):
     except Plant.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-'''
-키워드로 식물 찾기
-'''
+
 @api_view(['GET'])
 def search(request):
+    '''
+    키워드로 식물 찾기
+    '''
     query = request.GET.get('query', None)
     if query:
         try:
@@ -59,31 +68,34 @@ def search(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
-'''
-식물 등록
-'''
+
 @api_view(['POST'])
 def register_plant(request):
+    '''
+    식물 등록
+    '''
     try:
         with transaction.atomic():
             plant_serializer = PlantRegisterSerializer(data=request.data)  
-            if plant_serializer.is_valid():
+            if plant_serializer.is_valid(raise_exception=True):
                 plant_serializer.save()
 
-            plant_images = request.data.get("plant_images")
-            for plant_image in plant_images:
-                image_serializer=PlantImageRegisterSerializer(data=plant_image)
-                if image_serializer.is_valid():
-                    image_serializer.save()
-            return Response(plant_serializer.data, status=status.HTTP_200_OK)
+                plant_images = request.data.get("plant_images")
+                plant = Plant.objects.last()
+                for plant_image in plant_images:
+                    image_serializer=PlantImageRegisterSerializer(data=plant_image, partial=True)
+                    if image_serializer.is_valid(raise_exception=True):
+                        image_serializer.save(plant=plant)
+                return Response(plant_serializer.data, status=status.HTTP_200_OK)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-'''
-태그 등록
-'''
+
 @api_view(['POST'])
 def create_tag(request, id):
+    '''
+    태그 등록
+    '''
     plant = Plant.objects.get(id=id)
     serializer = TagSerializer(data=request.data)
     if serializer.is_valid():

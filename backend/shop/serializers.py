@@ -11,8 +11,7 @@ class PlantSerializer(serializers.ModelSerializer):
         model = Plant
         fields = ['id', 'plant_type', 'price']
 
-class PlantRegisterSerializer(serializers.ModelSerializer):
-    
+class PlantRegisterSerializer(serializers.ModelSerializer): 
     class Meta:
         model = Plant
         fields = '__all__'

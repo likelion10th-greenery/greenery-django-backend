@@ -58,7 +58,7 @@ class PlantImage(models.Model):
     """
     이미지 필요할 때, view에서 찾아서 뿌려주는걸료..?
     """
-    plant_id = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
     image_url = models.TextField()
     image_number = models.IntegerField()  
     is_rep = models.BooleanField(blank=True)
