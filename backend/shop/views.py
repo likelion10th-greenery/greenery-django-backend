@@ -1,4 +1,4 @@
-from email.mime import image
+from django.db import transaction
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -60,14 +60,22 @@ def search(request):
 '''
 @api_view(['POST'])
 def register_plant(request):
-    plant_serializer = PlantRegisterSerializer(data=request.data)
-    image_serializer = PlantImageRegisterSerializer(data=request.data.get("plant_images"))
-    
-    if plant_serializer.is_valid() and image_serializer.is_valid():
-        plant_serializer.save()
-        image_serializer.save()
-        return Response(plant_serializer.data.update(image_serializer.data), status=status.HTTP_200_OK)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    try:
+        with transaction.atomic():
+            plant_serializer = PlantRegisterSerializer(data=request.data)  
+            if plant_serializer.is_valid():
+                plant_serializer.save()
+
+            plant_images = request.data.get("plant_images")
+            for plant_image in plant_images:
+                image_serializer=PlantImageRegisterSerializer(data=plant_image)
+                if image_serializer.is_valid():
+                    image_serializer.save()
+                    
+            plant_serializer.data["plant_images"]=str(request.data.get("plant_images"))
+            return Response(plant_serializer.data, status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 '''
 태그 등록

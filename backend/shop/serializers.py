@@ -12,6 +12,8 @@ class PlantSerializer(serializers.ModelSerializer):
         fields = ['id', 'plant_name', 'price']
 
 class PlantRegisterSerializer(serializers.ModelSerializer):
+    plant_images=serializers.CharField()
+    
     class Meta:
         model = Plant
         fields = '__all__'
