@@ -27,6 +27,7 @@ class Plant(models.Model):
 
 
     # ------------------ shop main -------------------- #
+    feed_title= models.CharField(max_length=50, default="꽃 구경하세요:)") #게시글의 제목
     plant_name = models.CharField(max_length=50) # 나중에 식물명 데이터 베이스에서 고르는 형식으로 바꾸겠음.
     price = models.IntegerField()
     pic1 = models.TextField(blank=True, null=True) # 나중에 디폴트 이미지를 넣겠음.
@@ -44,7 +45,7 @@ class Plant(models.Model):
     pic8 = models.TextField(blank=True, null=True)
     pic9 = models.TextField(blank=True, null=True)
     pic10 = models.TextField(blank=True, null=True)
-    stock = models.IntegerField() # pdf에는 등록할 때 재고 입력하는 칸 없음
+    stock = models.IntegerField(default=0) # pdf에는 등록할 때 재고 입력하는 칸 없음
     origin = models.CharField(max_length=50, choices=ORIGIN) # enum 아는 사람 손
     plant_width = models.FloatField(blank=True, null=True)
     plant_vertical = models.FloatField(blank=True, null=True)
@@ -52,7 +53,8 @@ class Plant(models.Model):
     pot_type = models.CharField(max_length=100, blank=True, null=True)
     deliver_type = models.CharField(max_length=50, choices=DELIVERY) # enum 아는 사람 손
     plant_detail = models.TextField(blank=True, null=True)
-    address = models.CharField(max_length=1000)
+    address = models.CharField(max_length=1000) #지역 3개까지 ","로 연결해서 저장
+    view_cnt= models.IntegerField(default=0) # 조회수
     pub_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # 마찬가지로 날짜는 pdf는 없는 요소
 
     def __str__(self):
