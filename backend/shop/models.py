@@ -57,6 +57,14 @@ class Plant(models.Model):
 
     def __str__(self):
         return self.plant_name
+
+class Tag(models.Model):
+    plant_id = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    tag = models.TextField()
+
+    def __str__(self):
+        return self.tag
+        
 '''
 class PlantImage(models.Model):
     plant_id = models.ForeignKey(Plant, on_delete=models.CASCADE)
