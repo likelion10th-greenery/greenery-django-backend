@@ -8,7 +8,6 @@ urlpatterns = [
     path('<int:id>/', get_one_plant),
     path('register/', register_plant),
     path('search', search), # search?query=[식물이름]
-    path('tag/<int:id>', create_tag),
     path('crawler', update_plant_type),
     path('<str:type>/', get_classified_plants),
 ]
