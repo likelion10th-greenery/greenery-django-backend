@@ -11,13 +11,14 @@ from django.contrib.auth.hashers import make_password
 @api_view(['POST'])
 def signup(request):
     serializer = SignupSerializer(data=request.data)
+    print("!")
     if serializer.is_valid():
-        if len(serializer.password) >= 8 and any(i.isnum() for i in serializer.password) and any(i.isdigit() for i in serializer.password):
-            if serializer.password == serializer.password1:
-                if len(str(serializer.user_num)) == 11:
-                    new_user = serializer.save(password = make_password(serializer.validated_data['password']))
-                    auth.login(request, new_user)
-                    return Response(status=status.HTTP_200_OK)
+        print("!!")
+        if len(serializer.validated_data['password']) >= 8 and any(i.isdigit() for i in serializer.validated_data['password']):
+            if serializer.validated_data['password'] == serializer.validated_data['password1']:
+                new_user = serializer.save(password = make_password(serializer.validated_data['password']))
+                auth.login(request, new_user)
+                return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
