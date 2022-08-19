@@ -18,3 +18,30 @@ def signup(request):
                 auth.login(request, new_user)
                 return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+'''
+로그인
+'''
+@api_view(['POST'])
+def login(request):
+    serializer = LoginSerializer(data=request.data)
+    if serializer.is_valid():
+        user = auth.authenticate(
+            request = request, 
+            username = serializer.data['username'],
+            password = serializer.data['password']
+        )
+        if user is not None:
+            auth.login(request, user)
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+'''
+로그아웃
+'''
+@api_view(['POST'])
+def logout(request):
+    auth.logout(request)
+    return Response(status=status.HTTP_200_OK)
