@@ -12,5 +12,4 @@ urlpatterns = [
     path('crawler', update_plant_type),
     path('<str:type>/', get_classified_plants),
 ]
-
 # <str:type>이 들어 있으면 맨 밑으로 내려야 한다

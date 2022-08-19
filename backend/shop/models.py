@@ -67,3 +67,6 @@ class PlantImage(models.Model):
 
 class PlantType(models.Model):
     type=models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.type
