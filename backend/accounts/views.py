@@ -11,9 +11,7 @@ from django.contrib.auth.hashers import make_password
 @api_view(['POST'])
 def signup(request):
     serializer = SignupSerializer(data=request.data)
-    print("!")
     if serializer.is_valid():
-        print("!!")
         if len(serializer.validated_data['password']) >= 8 and any(i.isdigit() for i in serializer.validated_data['password']):
             if serializer.validated_data['password'] == serializer.validated_data['password1']:
                 new_user = serializer.save(password = make_password(serializer.validated_data['password']))
@@ -21,12 +19,29 @@ def signup(request):
                 return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
+'''
+로그인
+'''
 @api_view(['POST'])
-def signup2(request):
-    serializer = SignupSerializer(data=request.data)
+def login(request):
+    serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
-        new_user = serializer.save(password = make_password(serializer.validated_data['password1']))
-        auth.login(request, new_user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    print(serializer.errors)
+        user = auth.authenticate(
+            request = request, 
+            username = serializer.data['username'],
+            password = serializer.data['password']
+        )
+        if user is not None:
+            auth.login(request, user)
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+'''
+로그아웃
+'''
+@api_view(['POST'])
+def logout(request):
+    auth.logout(request)
+    return Response(status=status.HTTP_200_OK)

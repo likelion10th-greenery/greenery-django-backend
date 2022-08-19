@@ -1,11 +1,12 @@
 from django.http import JsonResponse
 from django.db import transaction
+from django.db.models import Q
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .models import Plant, Tag
+from .models import Plant, PlantImage, Tag
 from .serializers import PlantSerializer, PlantRegisterSerializer, PlantImageRegisterSerializer, TagSerializer
 from .utils.PlantTypeCrawler import PlantTypeCrawler
 
@@ -17,8 +18,24 @@ def get_all_plants(request):
     모든 식물 조회
     '''
     plants = Plant.objects.all()
-    serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
+    data=list()
+    for plant in plants:
+        q=Q()
+        q.add(Q(plant=plant), q.AND)
+        q.add(Q(image_number=1), q.AND)
+        images= PlantImage.objects.filter(q)    
+        data.append([PlantRegisterSerializer(plant),PlantImageRegisterSerializer(images)])
+    return Response(data)
+
+# @api_view(["GET"])
+# def get_all_plants(request):
+#     '''
+#     모든 식물 조회
+#     '''
+#     plants = Plant.objects.all()
+#     serializer = PlantSerializer(many=True)
+#     serializer.validated_data["img_url"] = 
+
 
 
 @api_view(['GET'])
