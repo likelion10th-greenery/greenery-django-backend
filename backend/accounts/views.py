@@ -12,8 +12,9 @@ from django.contrib.auth.hashers import make_password
 def signup(request):
     serializer = SignupSerializer(data=request.data)
     if serializer.is_valid():
+        print("일단 valid")
         serializer.save(commit=False)
-        if len(serializer.password1) >= 8 and len(serializer.user_num) == 11:
+        if len(serializer.password1) >= 8 and len(str(serializer.user_num)) == 11:
             alpha_flag = False
             num_flag = False
             for i in serializer.password1:
@@ -27,4 +28,18 @@ def signup(request):
                 new_user = serializer.save(password = make_password(serializer.validated_data['password1']))
         auth.login(request, new_user)
         return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def signup2(request):
+    print("!")
+    serializer = SignupSerializer(data=request.data)
+    print("!!")
+    if serializer.is_valid():
+        print("!!!")
+        new_user = serializer.save(password = make_password(serializer.validated_data['password1']))
+        print("!!!!")
+        auth.login(request, new_user)
+        return Response(status=status.HTTP_200_OK)
+    print(serializer.errors)
     return Response(status=status.HTTP_400_BAD_REQUEST)
