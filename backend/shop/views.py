@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .models import Plant
+from .models import Plant, Tag
 from .serializers import PlantSerializer, PlantRegisterSerializer, PlantImageRegisterSerializer, TagSerializer
 from .utils.PlantTypeCrawler import PlantTypeCrawler
 
@@ -84,22 +84,33 @@ def register_plant(request):
                     image_serializer=PlantImageRegisterSerializer(data=plant_image, partial=True)
                     if image_serializer.is_valid(raise_exception=True):
                         image_serializer.save(plant=plant, image_number=idx)
+
+                plant_tags= request.data.get("plant_tags")
+                for plant_tag in plant_tags:
+                    candidate_tag=plant_tag.get("tag").replace(" ","")
+                    duplicated_tag=find_duplicate_tags(candidate_tag)
+                    if not duplicated_tag:
+                        tag_serializer= TagSerializer(data=plant_tag)
+                        if tag_serializer.is_valid(raise_exception=True):
+                            tag=tag_serializer.save(tag=candidate_tag)
+                            plant.add_tag(tag)
+                            plant.save()
+                    else:
+                        plant.add_tag(duplicated_tag)
+                        plant.save()
                 return Response(plant_serializer.data, status=status.HTTP_200_OK)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+def find_duplicate_tags(tag):
+    """
+    중복태그 검출로직
+    """
+    try:
+        return Tag.objects.get(tag=tag)
+    except:
+        return False
 
-@api_view(['POST'])
-def create_tag(request, id):
-    '''
-    태그 등록
-    '''
-    plant = Plant.objects.get(id=id)
-    serializer = TagSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save(plant_id=plant)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 def update_plant_type(request):
     PlantTypeCrawler().crawler()
