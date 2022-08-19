@@ -1,25 +1,25 @@
 from django.db import models
 
 CATEGORIES = (
-        ('FLOWER', '꽃'),
-        ('FOLIAGE', '관엽/공기정화'),
-        ('SUCCULENCE', '다육식물'),
-        ('WILD', '야생화/분재'),
-        ('ORCHID', '동/서양란'),
-        ('SEED', '묘묙/씨앗'),
-        ('ELSE', '기타'),
+        ('flower', '꽃'),
+        ('foliage', '관엽/공기정화'),
+        ('succulence', '다육식물'),
+        ('wild', '야생화/분재'),
+        ('orchid', '동/서양란'),
+        ('seed', '묘묙/씨앗'),
+        ('else', '기타'),
     )
 
 ORIGIN = (
-    ('DOMESTIC', '국내산'),
-    ('IMPORT', '수입산'),
-    ('ELSE', '모름'),
+    ('domestic', '국내산'),
+    ('import', '수입산'),
+    ('else', '모름'),
 )
 
 DELIVERY = (
-    ('COURIER', '택배'),
-    ('DIRECT', '직거래'),
-    ('BOTH', '상관 없음'),
+    ('courier', '택배'),
+    ('direct', '직거래'),
+    ('both', '상관 없음'),
 )
 
 class Tag(models.Model):

@@ -4,7 +4,7 @@ from .views import *
 app_name = 'shop'
 
 urlpatterns = [
-    path('', get_all_plants),
+    path('view-all', get_all_plants),
     path('<int:id>/', get_one_plant),
     path('register/', register_plant),
     path('search', search), # search?query=[식물이름]
