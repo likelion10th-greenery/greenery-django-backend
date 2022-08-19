@@ -59,7 +59,7 @@ def search(request):
     query = request.GET.get('query', None)
     if query:
         try:
-            plants = Plant.objects.filter(plant_name__contains=query)
+            plants = Plant.objects.filter(plant_type__contains=query)
             serializer = PlantSerializer(plants, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Plant.DoesNotExist:

@@ -29,3 +29,6 @@ class PlantTypeCrawler():
                     PlantType(type=plant_type).save()
             else :
                 print(response.status_code)
+
+    def __str__(self):
+        return self.plant_type
