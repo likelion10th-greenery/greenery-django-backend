@@ -8,6 +8,5 @@ class CustomUser(AbstractUser):
     password = models.CharField(max_length=50)
     password1 = models.CharField(max_length=50)
     phone_num = models.CharField(max_length=11)
-    user_address = models.CharField(max_length=200, blank = True, null = True),
-    #user_bool = models.BooleanField(default=False)
-
+    user_address = models.CharField(max_length=200, blank = True, null = True)
+    user_bool = models.BooleanField(default=False)
