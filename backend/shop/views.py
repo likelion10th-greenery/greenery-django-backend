@@ -36,8 +36,6 @@ def get_all_plants(request):
 #     serializer = PlantSerializer(many=True)
 #     serializer.validated_data["img_url"] = 
 
-
-
 @api_view(['GET'])
 def get_classified_plants(request, type):
     '''
