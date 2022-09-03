@@ -30,5 +30,3 @@ class PlantTypeCrawler():
             else :
                 print(response.status_code)
 
-    def __str__(self):
-        return self.plant_type

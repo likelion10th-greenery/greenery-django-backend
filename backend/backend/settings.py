@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from decouple import config
 
+import datetime
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'shop',
     'corsheaders',
+    # 'rest_framework_jwt',
 ]
 
 MIDDLEWARE = [
@@ -84,10 +87,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
     }
 }
 
@@ -134,3 +139,19 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ]
+}
+
+# JWT_AUTH = { 
+#     'JWT_SECRET_KEY': SECRET_KEY, 
+#     'JWT_ALGORITHM': 'HS256', 
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300), 
+#     'JWT_ALLOW_REFRESH': True, 
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7), 
+# }
+
+# REST_USE_JWT = True

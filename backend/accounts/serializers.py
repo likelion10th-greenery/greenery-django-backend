@@ -9,3 +9,4 @@ class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['username','password','password1','phone_num','user_address','user_bool']
+
