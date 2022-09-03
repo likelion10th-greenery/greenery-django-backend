@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'shop',
     'corsheaders',
-    'rest_framework_jwt',
+    # 'rest_framework_jwt',
 ]
 
 MIDDLEWARE = [
@@ -142,16 +142,16 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ]
 }
 
-JWT_AUTH = { 
-    'JWT_SECRET_KEY': SECRET_KEY, 
-    'JWT_ALGORITHM': 'HS256', 
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300), 
-    'JWT_ALLOW_REFRESH': True, 
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7), 
-}
+# JWT_AUTH = { 
+#     'JWT_SECRET_KEY': SECRET_KEY, 
+#     'JWT_ALGORITHM': 'HS256', 
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300), 
+#     'JWT_ALLOW_REFRESH': True, 
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7), 
+# }
 
-REST_USE_JWT = True
+# REST_USE_JWT = True
