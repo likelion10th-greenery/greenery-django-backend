@@ -92,27 +92,29 @@ def register_plant(request):
             plant_serializer = PlantRegisterSerializer(data=request.data)  
             if plant_serializer.is_valid(raise_exception=True):
                 plant_serializer.save()
-
                 plant_images = sorted(request.data.get("plant_images"),key=lambda x: x["image_number"])
                 plant = Plant.objects.last()
                 for idx, plant_image in enumerate(plant_images, start=1):
                     image_serializer=PlantImageRegisterSerializer(data=plant_image, partial=True)
                     if image_serializer.is_valid(raise_exception=True):
                         image_serializer.save(plant=plant, image_number=idx)
-
+                
                 plant_tags= request.data.get("plant_tags")
-                for plant_tag in plant_tags:
-                    candidate_tag=plant_tag.get("tag").replace(" ","")
-                    duplicated_tag=find_duplicate_tags(candidate_tag)
-                    if not duplicated_tag:
-                        tag_serializer= TagSerializer(data=plant_tag)
-                        if tag_serializer.is_valid(raise_exception=True):
-                            tag=tag_serializer.save(tag=candidate_tag)
-                            plant.add_tag(tag)
-                            plant.save()
-                    else:
-                        plant.add_tag(duplicated_tag)
-                        plant.save()
+                print(plant_tags)
+                
+                # for plant_tag in plant_tags:
+                #     candidate_tag=plant_tag.get("tag").replace(" ","")
+                #     duplicated_tag=find_duplicate_tags(candidate_tag)
+                #     if not duplicated_tag:
+                #         tag_serializer= TagSerializer(data=plant_tag)
+                #         if tag_serializer.is_valid(raise_exception=True):
+                #             tag=tag_serializer.save(tag=candidate_tag)
+                #             plant.add_tag(tag)
+                #             plant.save()
+                #     else:
+                #         plant.add_tag(duplicated_tag)
+                #         plant.save()
+
                 return Response(plant_serializer.data, status=status.HTTP_200_OK)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
