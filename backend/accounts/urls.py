@@ -9,9 +9,9 @@ app_name = 'accounts'
 urlpatterns = [
     path('login/kakao/', kakao_auth.kakao_login),
     path('login/kakao/callback/', kakao_auth.kakao_callback),
-
     path('signup/',views.signup),
     path('login/',views.login),
     path('logout/',views.logout),
-
+    path('update/<int:pk>/',views.user_update),
+    path('delete/<int:pk>/',views.user_delete),
 ]
