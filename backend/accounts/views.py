@@ -44,3 +44,30 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return Response(status=status.HTTP_200_OK)
+
+"""
+유저 수정
+"""
+@api_view(['PUT'])
+def user_update(request,pk):
+    try:
+        user = CustomUser.objects.get(pk=pk)
+        serializer = SignupSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    except CustomUser.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+"""
+유저 삭제
+"""
+@api_view(['DELETE'])
+def user_delete(request,pk):
+    try:
+        user = CustomUser.objects.get(pk=pk)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except CustomUser.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
