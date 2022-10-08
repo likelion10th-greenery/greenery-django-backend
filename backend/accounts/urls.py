@@ -1,4 +1,5 @@
 from django.urls import path
+from django.urls import path, include
 
 from accounts import views
 from accounts import kakao_auth
@@ -14,4 +15,5 @@ urlpatterns = [
     path('logout/',views.logout),
     path('update/<int:pk>/',views.user_update),
     path('delete/<int:pk>/',views.user_delete),
+    path('login/naver/', include('allauth.urls')),
 ]

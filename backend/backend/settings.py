@@ -44,6 +44,11 @@ INSTALLED_APPS = [
     'accounts',
     'shop',
     'corsheaders',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.naver',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +159,4 @@ REST_FRAMEWORK = {
 # }
 
 # REST_USE_JWT = True
+
