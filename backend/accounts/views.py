@@ -1,14 +1,22 @@
 from .models import CustomUser
-from rest_framework.decorators import api_view
+
+from django.contrib import auth
+from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password
+
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
 from .serializers import LoginSerializer, SignupSerializer
-from django.contrib import auth
-from django.contrib.auth.hashers import make_password
+
 
 # Create your views here.
 
 @api_view(['POST'])
+@permission_classes((AllowAny,))
 def signup(request):
     serializer = SignupSerializer(data=request.data)
     if serializer.is_valid():
@@ -23,6 +31,7 @@ def signup(request):
 로그인
 '''
 @api_view(['POST'])
+@permission_classes((AllowAny,))
 def login(request):
     serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
@@ -32,8 +41,9 @@ def login(request):
             password = serializer.data['password']
         )
         if user is not None:
+            token, _ = Token.objects.get_or_create(user=user)
             auth.login(request, user)
-            return Response(status=status.HTTP_200_OK)
+            return Response({'token':token.key}, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 

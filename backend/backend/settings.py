@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'accounts',
     'shop',
     'corsheaders',
+    'rest_framework',
+    'rest_framework_jwt',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -141,9 +143,15 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : [
-        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES' : [
+        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
     ]
 }
+
 
 # JWT_AUTH = { 
 #     'JWT_SECRET_KEY': SECRET_KEY, 
