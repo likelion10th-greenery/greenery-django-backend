@@ -15,3 +15,5 @@ urlpatterns = [
     path('update/<int:pk>/',views.user_update),
     path('delete/<int:pk>/',views.user_delete),
 ]
+
+# query parameter로 받아서 login 합치기
