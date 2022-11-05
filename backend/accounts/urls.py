@@ -15,5 +15,4 @@ urlpatterns = [
     path('logout/',views.logout),
     path('update/<int:pk>/',views.user_update),
     path('delete/<int:pk>/',views.user_delete),
-    path('login/naver/', include('allauth.urls')),
 ]

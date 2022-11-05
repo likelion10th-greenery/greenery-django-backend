@@ -40,15 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'accounts',
     'shop',
     'corsheaders',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.naver',
+    'rest_framework',
+    'rest_framework_jwt',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -146,9 +144,17 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : [
-        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES' : [
+        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
 
 # JWT_AUTH = { 
 #     'JWT_SECRET_KEY': SECRET_KEY, 
@@ -159,4 +165,3 @@ REST_FRAMEWORK = {
 # }
 
 # REST_USE_JWT = True
-
