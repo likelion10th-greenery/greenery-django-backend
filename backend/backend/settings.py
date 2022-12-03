@@ -142,26 +142,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES' : [
-        'rest_framework.authentication.TokenAuthentication',
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES' : [
-        'rest_framework.permissions.AllowAny',
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAdminUser',
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-
-# JWT_AUTH = { 
-#     'JWT_SECRET_KEY': SECRET_KEY, 
-#     'JWT_ALGORITHM': 'HS256', 
-#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300), 
-#     'JWT_ALLOW_REFRESH': True, 
-#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7), 
-# }
-
-# REST_USE_JWT = True
