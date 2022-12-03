@@ -99,8 +99,8 @@ def register_plant(request):
                     if image_serializer.is_valid(raise_exception=True):
                         image_serializer.save(plant=plant, image_number=idx)
                 
-                plant_tags= request.data.get("plant_tags")
-                print(plant_tags)
+            plant_tags= request.data.get("plant_tags")
+            print(plant_tags)
                 
                 # for plant_tag in plant_tags:
                 #     candidate_tag=plant_tag.get("tag").replace(" ","")
@@ -115,7 +115,7 @@ def register_plant(request):
                 #         plant.add_tag(duplicated_tag)
                 #         plant.save()
 
-                return Response(plant_serializer.data, status=status.HTTP_200_OK)
+            return Response(plant_serializer.data, status=status.HTTP_200_OK)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
