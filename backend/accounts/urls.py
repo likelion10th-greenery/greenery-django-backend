@@ -3,6 +3,7 @@ from django.urls import path, include
 
 from accounts import views
 from accounts import kakao_auth
+from accounts import naver_auth
 
 
 app_name = 'accounts'

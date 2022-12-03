@@ -11,3 +11,8 @@ class CustomUser(AbstractUser):
     user_address = models.CharField(max_length=200, blank = True, null = True)
     user_bool = models.BooleanField(default=False)
     nickname = models.CharField(max_length=50, unique=True)
+    introduction = models.CharField(max_length=100,blank=True,null=True)
+    instagram_id = models.TextField(max_length=50,blank=True,null=True)
+    youtube_id = models.TextField(max_length=50,blank=True,null=True)
+    blog_id = models.TextField(max_length=50,blank=True,null=True)
+    profile_img = models.TextField(max_length=100,default=False)

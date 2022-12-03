@@ -18,13 +18,14 @@ def kakao_login(request):
     rest_api_key= "6fec2af22db6826a94eba707eac15af5"
     #이후 도메인에 따른 수정 필요
     callback_url='http://127.0.0.1:8000/accounts/login/kakao/callback/'
+    redirect_url= f"kauth.kakao.com/oauth/authorize?client_id={rest_api_key}&redirect_uri={callback_url}&response_type=code"
 
     print("ok1")
-    return redirect(callback_url)
+    return redirect(f"https://{redirect_url}")
 
 @api_view(['GET'])
 def kakao_callback(request):
-    try: 	
+    try:    
         print("ok2")
         rest_api_key= "6fec2af22db6826a94eba707eac15af5"
         callback_url='http://127.0.0.1:8000/accounts/login/kakao/callback/'
