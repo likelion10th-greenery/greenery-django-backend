@@ -15,4 +15,4 @@ class CustomUser(AbstractUser):
     instagram_id = models.TextField(max_length=50,blank=True,null=True)
     youtube_id = models.TextField(max_length=50,blank=True,null=True)
     blog_id = models.TextField(max_length=50,blank=True,null=True)
-    profile_img = models.TextField(max_length=100,default=False)
+    profile_img = models.TextField(max_length=100,default='greenary')
