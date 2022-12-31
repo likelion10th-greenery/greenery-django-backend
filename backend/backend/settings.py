@@ -16,7 +16,7 @@ from decouple import config
 import datetime
 
 ALLOWED_HOSTS = [
-    '*',
+    '*', #TODO: trim
     '127.0.0.1',
     'ec2-44-204-50-208.compute-1.amazonaws.com',
     'www.ec2-44-204-50-208.compute-1.amazonaws.com',
@@ -35,8 +35,6 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
