@@ -3,7 +3,7 @@ Description=uWSGI service
 After=syslog.target
 
 [Service]
-ExecStart=/home/ubuntu/.pyenv/versions/uwsgi-env/bin/uwsgi -i ~/greenery-django-backend/backend.config/uwsgi/greenery.ini
+ExecStart=/home/ubuntu/.pyenv/versions/uwsgi-env/bin/uwsgi -i ~/greenery-django-backend/backend/.config/uwsgi/greenery.ini
 
 Restart=always
 KillSignal=SIGQUIT
