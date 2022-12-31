@@ -16,7 +16,7 @@ from decouple import config
 import datetime
 
 ALLOWED_HOSTS = [
-    ".ec2-44-204-50-208.compute-1.amazonaws.com"
+    "ec2-44-204-50-208.compute-1.amazonaws.com"
 ]
 
 
