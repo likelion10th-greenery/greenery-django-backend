@@ -17,3 +17,32 @@ class CustomUser(AbstractUser):
 # "password1" : "sallybelly12!",
 # "phone_num" : "01012341234"
 # }
+
+# 카테고리
+CATEGORIES = (
+        ('flower', '꽃'),
+        ('foliage', '관엽/공기정화'),
+        ('succulence', '다육식물'),
+        ('wild', '야생화/분재'),
+        ('orchid', '동/서양란'),
+        ('seed', '묘묙/씨앗'),
+        ('else', '기타'),
+    )
+
+# 키우는 장소
+PLACES = (
+    ('indoor', '실내'),
+    ('outdoor', '야외')
+)
+
+class PlantProfile(models.Model):
+    nickname = models.CharField(max_length=40)
+    category = models.CharField(max_length=50, choices=CATEGORIES)
+    place = models.CharField(max_length=50, choices=PLACES)
+    start_day = models.DateField()
+    pub_date = models.DateTimeField(auto_now=True)
+    img_url = models.TextField(blank=True, null=True, default="default_img")
+
+    def __str__(self):
+        return self.nickname
+
