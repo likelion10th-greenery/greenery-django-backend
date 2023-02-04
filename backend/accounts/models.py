@@ -16,3 +16,4 @@ class CustomUser(AbstractUser):
     youtube_id = models.TextField(max_length=50,blank=True,null=True)
     blog_id = models.TextField(max_length=50,blank=True,null=True)
     profile_img = models.TextField(max_length=100,default='greenary')
+    followings = models.ManyToManyField('self', symmetrical=False, related_name='followers',blank=True,null=True)

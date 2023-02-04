@@ -2,7 +2,10 @@ from .models import CustomUser
 
 from django.contrib import auth
 from django.contrib.auth import authenticate
+from django.contrib.auth import *
 from django.contrib.auth.hashers import make_password
+
+from django.shortcuts import get_object_or_404, redirect
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -84,4 +87,16 @@ def user_delete(request,pk):
     except CustomUser.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-
+"""
+팔로우, 팔로잉
+"""
+def follow(request, user_pk):
+    if request.user.is_authenticated:
+        person = get_object_or_404(get_user_model(), pk=user_pk)
+        if person != request.user:
+            if person.followers.filter(pk=request.user.pk).exists():
+                person.followers.remove(request.user)
+            else:
+                person.followers.add(request.user)
+        return redirect('accounts:profile', person.username)
+    return redirect('accounts:login')
