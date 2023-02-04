@@ -26,26 +26,36 @@ CATEGORIES = (
     )
 
 PLACES = (
-        ('inside', '실내'),
-        ('outside', '야외'),
+        ('indoor', '실내'),
+        ('outdoor', '야외'),
     )
 
 class PlantDiary(models.Model):
-    username = models.CharField(max_length=50, default="비회원")
+    plantprofile = models.CharField(max_length=50, default="미정")
     title = models.CharField(max_length=100, default="제목 없음")
-    post_img = models.TextField(blank=True, null=True)
-    like = models.IntegerField(default=0)
+    category = models.CharField(blank=True, null=True, max_length=50, choices=CATEGORIES)
+    place = models.CharField(blank=True, null=True, max_length=50, choices=PLACES)
+    sun = models.IntegerField(default=3)
+    water = models.IntegerField(default=3)
+    year = models.IntegerField(default=2020)
+    month = models.IntegerField(default=1)
+    day = models.IntegerField(default=1)
     view_cnt = models.IntegerField(default=0)
-    order = models.CharField(max_length=50, choices=ORDERS)
-    category = models.CharField(max_length=50, choices=CATEGORIES)
-    place = models.CharField(max_length=50, choices=PLACES)
     plant_tags = models.TextField(blank=True, null=True)
-    img_url = models.TextField(blank=True, null=True)
+    img_url = models.TextField(blank=True, null=True, default='default_img')
+    body = models.TextField(blank=True, null=True, default="")
     pub_date = models.DateTimeField(auto_now_add=True)
-    book_mark = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.title
+
+class DiaryImage(models.Model):
+    diary = models.ForeignKey(PlantDiary, on_delete=models.CASCADE)
+    image = models.TextField()
+    body = models.TextField()
+
+    def __str__(self):
+        return self.image
 
 
 """

@@ -9,6 +9,8 @@ from rest_framework.viewsets import ModelViewSet
 
 from django.db import transaction
 
+from accounts.models import PlantProfile
+
 def find_duplicate_tags(tag):
     """
     중복태그 검출로직
@@ -23,28 +25,85 @@ def find_duplicate_tags(tag):
 식물일지 - Plant Diary
 """
 
+class DiaryImageViewSet(ModelViewSet):
+    """
+    커뮤니티 - 식물일지의 이미지 클래스뷰
+    """
+    queryset = DiaryImage.objects.all()
+    serializer_class = DiaryImageSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save()
+
+        image = DiaryImage.objects.last()
+        print(image.diary.img_url)
+        if image.diary.img_url == "default_img":
+            image.diary.img_url = image.image
+        image.diary.save()
+
+
+
+@api_view(['GET'])
+def get_all_diaries(request):
+    '''
+    모든 식물 일지 조회 (community main)
+    '''
+    diary = PlantDiary.objects.all()
+    serializer = DiaryMainSerializer(diary, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@transaction.atomic()
+def get_one_plantdiary(request, id):
+    """
+    한 식물일지 조회 (plantdiary detail)
+    """
+    try:
+        images = DiaryImage.objects.filter(diary = id)
+        imgserializer = DiaryImageSerializer(images, many=True)
+        diary = PlantDiary.objects.get(id=id)
+        serializer = DiaryDetailSerializer(diary)
+        res = {
+            "data" : serializer.data,
+            "image" : imgserializer.data
+        }
+        diary.save()
+        return Response(res, status=status.HTTP_200_OK)
+    except diary.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
-def plant_diary(request):
+def plantdiary_register(request):
     """
-    커뮤니티 - 식물일지 작성
+    식물일지 등록하기
     """
-    if request.user.is_authenticated:
-        serializer = PlantPostSerializer(data = request.data)
+    if request.user.is_authenticated: # 사용자 인증
+        serializer = DiaryPostSerializer(data = request.data)
         if serializer.is_valid():
-            serializer.save(username=request.user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            try:
+                plant = PlantProfile.objects.get(nickname = serializer.validated_data['plantprofile'])
+                serializer.validated_data['category'] = plant.category
+                serializer.validated_data['place'] = plant.place
+                serializer.validated_data['year'] = str(plant.start_day)[:4]
+                serializer.validated_data['month'] = str(plant.start_day)[5:7]
+                serializer.validated_data['day'] = str(plant.start_day)[8:10]
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except PlantProfile.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response("로그인이나 회원 가입 후 이용 해주세요", status=status.HTTP_401_UNAUTHORIZED)
+        return Response("로그인이나 회원가입 후 이용해주세요", status=status.HTTP_401_UNAUTHORIZED)
 
 
 """
 질의응답 - QnA
 """
 
-class ExchangeSharingImageViewSet(ModelViewSet):
+class QnaImageViewSet(ModelViewSet):
     """
     커뮤니티 - 질의응답의 이미지 클래스뷰
     """
