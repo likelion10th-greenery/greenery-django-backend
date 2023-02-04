@@ -97,15 +97,26 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-import os
+import pymysql
 
+pymysql.install_as_MySQLdb()
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'greenery-db', # DB명
+        'USER': 'admin', # 데이터베이스 계정
+        'PASSWORD': 'qwer1234', # 계정 비밀번호
+        'HOST': 'greenery-db.c6h4cijeawvs.ap-northeast-2.rds.amazonaws.com', # 데이테베이스 주소(IP)
+        'PORT': '3306', # 데이터베이스 포트(보통은 3306)
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
