@@ -5,20 +5,62 @@ from .models import *
 식물일지
 """
 
-class PlantPostSerializer(serializers.ModelSerializer):
+class DiaryMainSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlantDiary
         fields = [
-            'title', 
-            'username',  
-            'order', 
-            'category', 
-            'place', 
-            'plant_tags', 
-            'post_img',
-            'img_url', 
-            'pub_date'
+            'id',
+            'img_url',
+            'year',
+            'month',
+            'day',
+            'title'
             ]
+
+class DiaryDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlantDiary
+        fields = [
+            'year',
+            'month',
+            'day',
+            'title',
+            'pub_date',
+            'category',
+            'place',
+            'sun',
+            'water',
+            'body',
+            'view_cnt'
+        ]
+
+
+class DiaryPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlantDiary
+        fields = [
+            'title',
+            'plantprofile',
+            'category',
+            'place',
+            'sun',
+            'water',
+            'year',
+            'month',
+            'day',
+            'img_url',
+            'body'
+        ]
+
+class DiaryImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiaryImage
+        fields = ['diary', 'image', 'body']
+
+class PlantImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiaryImage
+        fields = ['plant', 'image', 'body']
 
 """
 질의응답

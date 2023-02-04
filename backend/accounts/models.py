@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
     user_address = models.CharField(max_length=200, blank = True, null = True)
     user_bool = models.BooleanField(default=False)
 
+
 # {
 # "username" : "Sally",
 # "password" : "sallybelly12!",
